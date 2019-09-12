@@ -1,6 +1,7 @@
 import React from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const OnboardingForm = ({ values, errors, touched }) => {
   return (
@@ -23,12 +24,12 @@ const OnboardingForm = ({ values, errors, touched }) => {
       <div>
         {touched.tos && errors.tos && <p>{errors.tos}</p>}
         <label>
-          <Field type="checkbox" name="tos" />
+          <Field type="checkbox" name="tos" checked={values.tos} />
           Accept Terms of Service
         </label>
       </div>
 
-      <button>Submit</button>
+      <button type="submit">Submit</button>
     </Form>
   );
 };
@@ -53,5 +54,16 @@ export default withFormik({
       .min(8, "Password must be between 8 and 20 characters")
       .max(20, "Password must be between 8 and 20 characters"),
     tos: Yup.boolean().oneOf([true], "Please accept the Terms of Service")
-  })
+  }),
+
+  handleSubmit: values => {
+    axios
+      .post("https://reqres.in/api/users_", values)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+      });
+  }
 })(OnboardingForm);
