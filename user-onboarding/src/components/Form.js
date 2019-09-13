@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const OnboardingForm = ({ values, errors, touched }) => {
+import Users from "./Users";
+
+const OnboardingForm = ({ values, errors, touched, status }) => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (status) {
+      setUsers([...users, status]);
+      console.log(users);
+    }
+  }, [status]);
+
   return (
     <Form>
       <div>
@@ -28,8 +39,8 @@ const OnboardingForm = ({ values, errors, touched }) => {
           Accept Terms of Service
         </label>
       </div>
-
       <button type="submit">Submit</button>
+      <Users users={users} />
     </Form>
   );
 };
@@ -56,11 +67,11 @@ export default withFormik({
     tos: Yup.boolean().oneOf([true], "Please accept the Terms of Service")
   }),
 
-  handleSubmit: values => {
+  handleSubmit: (values, { setStatus }) => {
     axios
       .post("https://reqres.in/api/users_", values)
       .then(response => {
-        console.log(response);
+        setStatus(response.data);
       })
       .catch(error => {
         console.log("Error: ", error);
