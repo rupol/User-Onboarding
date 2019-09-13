@@ -11,37 +11,39 @@ const OnboardingForm = ({ values, errors, touched, status }) => {
   useEffect(() => {
     if (status) {
       setUsers([...users, status]);
-      console.log(users);
     }
   }, [status]);
 
   return (
-    <Form>
-      <div>
-        {touched.name && errors.name && <p>{errors.name}</p>}
-        <Field type="text" name="name" placeholder="Name" />
-      </div>
+    <div>
+      <Form>
+        <div className="flex-container">
+          {touched.name && errors.name && <p>{errors.name}</p>}
+          <label htmlFor="name">Name:</label>
+          <Field type="text" name="name" id="name" />
+        </div>
 
-      <div>
-        {touched.email && errors.email && <p>{errors.email}</p>}
-        <Field type="email" name="email" placeholder="Email" />
-      </div>
+        <div className="flex-container">
+          {touched.email && errors.email && <p>{errors.email}</p>}
+          <label htmlFor="email">Email:</label>
+          <Field type="email" name="email" id="email" />
+        </div>
 
-      <div>
-        {touched.password && errors.password && <p>{errors.password}</p>}
-        <Field type="password" name="password" placeholder="Password" />
-      </div>
+        <div className="flex-container">
+          {touched.password && errors.password && <p>{errors.password}</p>}
+          <label htmlFor="password">Password:</label>
+          <Field type="password" name="password" id="password" />
+        </div>
 
-      <div>
-        {touched.tos && errors.tos && <p>{errors.tos}</p>}
-        <label>
-          <Field type="checkbox" name="tos" checked={values.tos} />
-          Accept Terms of Service
-        </label>
-      </div>
-      <button type="submit">Submit</button>
+        <div>
+          {touched.tos && errors.tos && <p id="tos-error">{errors.tos}</p>}
+          <Field type="checkbox" name="tos" id="tos" checked={values.tos} />
+          <label htmlFor="tos">Accept Terms of Service</label>
+        </div>
+        <button type="submit">Sign Up</button>
+      </Form>
       <Users users={users} />
-    </Form>
+    </div>
   );
 };
 
